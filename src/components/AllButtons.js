@@ -19,18 +19,12 @@ class AllButtons extends Component{
         
     }
 
-    reset = () => {
-        document.getElementById("antal").textContent = 0;
-        this.setState({all: letters.map(element => <MyButton class = "button" letter = {element} color = {color} key={element}></MyButton>)});   
-         
-    };
-
     render()
     {
         return (
         <div>
         {this.state.all}
-        <button onClick = {this.reset.bind(this)}>Reset</button>
+       
         </div>
         );
     };

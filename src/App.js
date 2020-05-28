@@ -17,27 +17,36 @@ let amountOfLines = () => {
 }
 
 
-const test = () => ReactDOM.render(<AllButtons/>, document.getElementsByClassName("buttonContainer")[0]);
+const test = () =>{
+  let letterButtons = Array.from(document.getElementsByClassName('button'));
+      letterButtons.map(letterButton => {
+      letterButton.style.backgroundColor = '#ffc107';
+      letterButton.style.color = 'white';
+      letterButton.style.boxShadow = '0px 7px #ff9800';
+      letterButton.style.disabled = 'false';
+      letterButton.value = "";
+      });
+      document.getElementById("antal").textContent = 0;
+}
+
 let word = RandomWord();
 let lines = amountOfLines();
-// let app = (
-//   <header className="App-header">
-//   <h1>Hänga gubbe</h1>
-//   <p>Tryck på valfri bokstav för att gissa ordet</p>
-//   <img src= {hang} alt = "Hang"></img>
-//   <p>{lines}</p>
-//   <p> Antal fel: <span id = "antal">0</span></p>
-//   <div className = "buttonContainer">
-//   <AllButtons></AllButtons>
-//   <button onClick = {test.bind(this)}>Reset2</button>
-//   </div>
-//   </header>
-// );
+
 
 let count = 0;
-const addOne = () => {
-  count++;
-  document.getElementById("antal").textContent = count.toString();
+const addOne = (e) => {
+  
+  if (e.target.className === 'button' && e.target.value === ""){
+    e.target.style.backgroundColor = '#bdbdbd';
+    e.target.value = "clicked";
+    e.target.style.boxShadow = '0px 7px #616161';
+    e.target.style.disabled = 'true';
+    e.target.style.color = 'white';
+    const antal = document.getElementById("antal");
+    let nyttAntal = Number(antal.textContent) + 1;
+    antal.textContent = nyttAntal;
+  }
+  
   console.log(count);
 };
 
@@ -50,11 +59,11 @@ function App() {
        <img src= {hang} alt = "Hang"></img>
        <p>{lines}</p>
        <p> Antal fel: <span id = "antal">0</span></p>
-       <div className = "buttonContainer">
-       <AllButtons onClick = {addOne.bind(this)}></AllButtons>
+       <div className = "buttonContainer" onClick = {addOne.bind(this)}>
+       <AllButtons></AllButtons>
        
        </div>
-       <button onClick = {test.bind(this)}>Reset2</button>
+       <button onClick = {test.bind(this)}>Reset</button>
       </header> 
     </div>
   );

@@ -3,15 +3,16 @@ import React, {Component} from 'react';
 const color = {
     backgroundColor: '#ffc107',
     color: 'white',
-    boxShadow: '0px 7px #ff9800'
+    boxShadow: '0px 7px #ff9800',
+    disabled: 'false'
 };
 
 const gray = {
     
         backgroundColor: '#bdbdbd',
         color: 'white',
-        boxShadow: '0px 7px #616161'
-    
+        boxShadow: '0px 7px #616161',
+        disabled: 'true'
 };
 
 class MyButton extends Component{
@@ -20,32 +21,13 @@ class MyButton extends Component{
         super(props)
     
         this.state = {
-            current: this.props.color
+            current: color
         }
-    }
-
-
-    clickHandler(e){
-        const antal = document.getElementById("antal");
-        let nyttAntal = Number(antal.textContent) + 1;
-        antal.textContent = nyttAntal;
-        this.setState({
-            current: gray
-        })
-       
     }
 
     render(){
-        if (this.state.current === this.props.color || this.state.current === color){
-
-            let button = <button className = "button" style = {this.state.current} onClick = {this.clickHandler.bind(this)}>{this.props.letter}</button>;
-            return button;
+            return <button className = "button">{this.props.letter}</button>;
             
-        }
-        else 
-        {
-            return <button className = "button" style = {this.state.current}>{this.props.letter}</button>
-        }
     }
 }
 
