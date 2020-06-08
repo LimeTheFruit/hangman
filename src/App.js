@@ -30,10 +30,15 @@ const App = () => {
   const [maskedWord, setMaskedWord] = useState(word.replace(regex, ' _ '));
 
   useEffect(() => {
-    count < 1 && setGameOver(true);
-    correctGuesses.length === word.length && setGameOver(true);
-    regex = new RegExp(`[^${correctGuesses}]`, 'gi');
-    setMaskedWord(word.replace(regex, ' _ '));
+    if (count < 1){
+      setGameOver(true); 
+      setMaskedWord(word);
+    }
+    else{
+      correctGuesses.length === word.length && setGameOver(true);
+      regex = new RegExp(`[^${correctGuesses}]`, 'gi');
+      setMaskedWord(word.replace(regex, ' _ '));
+    } 
   }, [count, correctGuesses])
 
   const reset = () => {
