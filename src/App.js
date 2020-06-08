@@ -15,7 +15,7 @@ const addKeyToArray = (key) =>{
   arrayOfKeys.push(key);
 }
 
-let arrayOfImages = [hang, hang1, hang2, hang3, hang4, hang5, hang6];
+let arrayOfImages = [hang6, hang5, hang4, hang3, hang2, hang1, hang];
 
 const letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", 
 "p", "q", "r","s", "t", "u", "v", "w", "x", "y", "z", "å", "ä", "ö"];
@@ -45,19 +45,17 @@ const App = () => {
       enabled: true
     };
   
-      arrayOfKeys.map(i => i.setKeyStatus(enabled));
-      setCount(6);
-      setGameOver(false);
-      setCorrectGuesses('');
-      word = RandomWord();
+    arrayOfKeys.map(i => i.setKeyStatus(enabled));
+    setCount(6);
+    setGameOver(false);
+    setCorrectGuesses('');
+    word = RandomWord();
   };
 
-  const keyClicked = (e) =>
-  {
+  const keyClicked = (e) => {
     let letter = e.target.textContent;
-    word.includes(letter) ? setCorrectGuesses(correctGuesses + letter) : setCount(count - 1);;
-    
-  }
+    word.includes(letter) ? setCorrectGuesses(correctGuesses + letter) : setCount(count - 1);
+  };
 
   const gameOverMessage = () =>{
       return (count < 1) ? <p>Du förlorade!!</p> : <p>Du vann!!!</p>;
@@ -77,7 +75,7 @@ const App = () => {
 
        <h1>Hänga gubbe</h1>
        <p>Tryck på valfri bokstav för att gissa ordet</p>
-       <img src= {arrayOfImages[(arrayOfImages.length - 1) - count]} alt = "Hang"></img>
+       <img src= {arrayOfImages[count]} alt = "Hang"></img>
        <h2>{maskedWord}</h2>
        <p> Gissningar kvar: {count}</p>
 
@@ -90,7 +88,5 @@ const App = () => {
     </div>
   );
 }
-
-
 
 export default App;
