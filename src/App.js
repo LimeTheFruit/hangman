@@ -1,70 +1,92 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, {useState, useEffect} from 'react';
 import hang from './Images/0.jpg';
-import AllButtons from './components/AllButtons';
+import hang1 from './Images/1.jpg';
+import hang2 from './Images/2.jpg';
+import hang3 from './Images/3.jpg';
+import hang4 from './Images/4.jpg';
+import hang5 from './Images/5.jpg';
+import hang6 from './Images/6.jpg';
+import Key from './components/Key';
 import './App.css';
 import RandomWord from './components/Words';
 
-// Skicka donom ord hit seden in i en komponent som skriver ut lika många antal streck? Eller bara length?
+let arrayOfKeys = [];
+const addKeyToArray = (key) =>{
+  arrayOfKeys.push(key);
+}
 
-let amountOfLines = () => {
-  let result = "";
-  for (let i = 0; i < word.length; i++) {
-    result = result + "_ ";
+let arrayOfImages = [hang, hang1, hang2, hang3, hang4, hang5, hang6];
+
+const letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", 
+"p", "q", "r","s", "t", "u", "v", "w", "x", "y", "z", "å", "ä", "ö"];
+let word = RandomWord();
+
+const App = () => {
+
+  const [count, setCount] = useState(6);
+  const [gameOver, setGameOver] = useState(false);
+  const [correctGuesses, setCorrectGuesses] = useState('');
+  let regex = new RegExp(`[^${correctGuesses}]`, 'gi');
+  const [maskedWord, setMaskedWord] = useState(word.replace(regex, ' _ '));
+
+  useEffect(() => {
+    count < 1 && setGameOver(true);
+    correctGuesses.length === word.length && setGameOver(true);
+    regex = new RegExp(`[^${correctGuesses}]`, 'gi');
+    setMaskedWord(word.replace(regex, ' _ '));
+  }, [count, correctGuesses])
+
+  const reset = () => {
+
+    const enabled = {
+      backgroundColor: '#ffc107',
+      color: 'white',
+      boxShadow: '0px 7px #ff9800',
+      enabled: true
+    };
+  
+      arrayOfKeys.map(i => i.setKeyStatus(enabled));
+      setCount(6);
+      setGameOver(false);
+      setCorrectGuesses('');
+      word = RandomWord();
+  };
+
+  const keyClicked = (e) =>
+  {
+    let letter = e.target.textContent;
+    word.includes(letter) ? setCorrectGuesses(correctGuesses + letter) : setCount(count - 1);;
     
   }
-  return result;
-}
 
+  const gameOverMessage = () =>{
+      return (count < 1) ? <p>Du förlorade!!</p> : <p>Du vann!!!</p>;
+    };
 
-const test = () =>{
-  let letterButtons = Array.from(document.getElementsByClassName('button'));
-      letterButtons.map(letterButton => {
-      letterButton.style.backgroundColor = '#ffc107';
-      letterButton.style.color = 'white';
-      letterButton.style.boxShadow = '0px 7px #ff9800';
-      letterButton.style.disabled = 'false';
-      letterButton.value = "";
-      });
-      document.getElementById("antal").textContent = 0;
-}
+  let renderKeys = letters.map(element => 
+    <Key 
+        addKeyToParent = {addKeyToArray} 
+        class = "button" 
+        letter = {element} 
+        keyClicked = {keyClicked}
+        key={element}>
+    </Key>);
 
-let word = RandomWord();
-let lines = amountOfLines();
-
-
-let count = 0;
-const addOne = (e) => {
-  
-  if (e.target.className === 'button' && e.target.value === ""){
-    e.target.style.backgroundColor = '#bdbdbd';
-    e.target.value = "clicked";
-    e.target.style.boxShadow = '0px 7px #616161';
-    e.target.style.disabled = 'true';
-    e.target.style.color = 'white';
-    const antal = document.getElementById("antal");
-    let nyttAntal = Number(antal.textContent) + 1;
-    antal.textContent = nyttAntal;
-  }
-  
-  console.log(count);
-};
-
-function App() {
   return (
     <div className="App">
-    <header className="App-header">
+
        <h1>Hänga gubbe</h1>
        <p>Tryck på valfri bokstav för att gissa ordet</p>
-       <img src= {hang} alt = "Hang"></img>
-       <p>{lines}</p>
-       <p> Antal fel: <span id = "antal">0</span></p>
-       <div className = "buttonContainer" onClick = {addOne.bind(this)}>
-       <AllButtons></AllButtons>
-       
+       <img src= {arrayOfImages[(arrayOfImages.length - 1) - count]} alt = "Hang"></img>
+       <h2>{maskedWord}</h2>
+       <p> Gissningar kvar: {count}</p>
+
+       <div className = "buttonContainer">
+        {gameOver ? gameOverMessage() : renderKeys}
        </div>
-       <button onClick = {test.bind(this)}>Reset</button>
-      </header> 
+
+       <button id = "reset" onClick = {reset}>Återställ</button>
+
     </div>
   );
 }
